@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Burger Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #7b2cbf;
+            --secondary: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,139 +20,189 @@
         }
 
         body {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .login-container h2 {
-            margin-bottom: 20px;
-            font-weight: 600;
-            font-size: 24px;
-            color: #2c3e50;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
+            background-color: var(--secondary);
             color: #333;
         }
 
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ccc;
+        header {
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        .products {
+            flex: 3;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .product {
+            background-color: #f9f9f9;
             border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product h3 {
+            margin: 10px 0 5px;
+        }
+
+        .product p {
             font-size: 14px;
-            transition: 0.3s;
+            margin-bottom: 10px;
         }
 
-        input:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #3498db;
+        .product button {
+            background-color: var(--primary);
             color: white;
-            font-weight: 600;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 10px 15px;
+            border-radius: 6px;
             cursor: pointer;
+            font-weight: 600;
             transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #2980b9;
+        .product button:hover {
+            background-color: #5a189a;
         }
 
-        .footer {
-            margin-top: 15px;
-            text-align: center;
+        .cart {
+            flex: 1;
+            margin-left: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            height: fit-content;
+        }
+
+        .cart h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .cart ul {
+            list-style: none;
+        }
+
+        .cart li {
+            margin-bottom: 8px;
             font-size: 14px;
         }
 
-        .footer a {
-            color: #3498db;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 14px;
+        .cart-total {
+            font-weight: bold;
             margin-top: 10px;
-            text-align: center;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" placeholder="Digite seu e-mail" required />
-            </div>
-            <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" placeholder="Digite sua senha" required />
-            </div>
-            <button type="submit">Entrar</button>
-            <div class="error-message" id="errorMsg"></div>
-        </form>
-        <div class="footer">
-            <p>Não tem uma conta? <a href="#">Cadastre-se</a></p>
+    <header>🍔 Burger Store</header>
+
+    <div class="container">
+        <div class="products" id="productList">
+            <!-- Produtos serão inseridos aqui pelo JS -->
+        </div>
+
+        <div class="cart">
+            <h2>🛒 Carrinho</h2>
+            <ul id="cartItems"></ul>
+            <div class="cart-total">Total: R$ <span id="total">0.00</span></div>
         </div>
     </div>
 
     <script>
-        const loginForm = document.getElementById('loginForm');
-        const errorMsg = document.getElementById('errorMsg');
-
-        loginForm.addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio padrão
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Simulando login (você pode trocar pelos seus dados ou validar com back-end)
-            const emailCorreto = 'usuario@teste.com';
-            const senhaCorreta = '123456';
-
-            if (email === emailCorreto && password === senhaCorreta) {
-                // Login bem-sucedido
-                window.location.href = 'sucesso.html';
-            } else {
-                errorMsg.textContent = 'E-mail ou senha incorretos.';
+        const products = [
+            {
+                name: "Cheeseburger",
+                price: 18.90,
+                img: "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=500&h=375&dpr=1"
+            },
+            {
+                name: "Hambúrguer Duplo",
+                price: 24.90,
+                img: "https://images.pexels.com/photos/2983101/pexels-photo-2983101.jpeg?auto=compress&cs=tinysrgb&w=500&h=375&dpr=1"
+            },
+            {
+                name: "Milkshake de Chocolate",
+                price: 12.00,
+                img: "https://images.pexels.com/photos/3727250/pexels-photo-3727250.jpeg?auto=compress&cs=tinysrgb&w=500&h=500&dpr=1"
+            },
+            {
+                name: "Milkshake de Morango",
+                price: 12.00,
+                img: "https://images.pexels.com/photos/5379707/pexels-photo-5379707.jpeg?auto=compress&cs=tinysrgb&w=500&h=500&dpr=1"
+            },
+            {
+                name: "Refrigerante Coca-Cola",
+                price: 6.00,
+                img: "https://images.pexels.com/photos/2983100/pexels-photo-2983100.jpeg?auto=compress&cs=tinysrgb&w=500&h=500&dpr=1"
+            },
+            {
+                name: "Refrigerante Guaraná",
+                price: 6.00,
+                img: "https://images.pexels.com/photos/2668497/pexels-photo-2668497.jpeg?auto=compress&cs=tinysrgb&w=500&h=500&dpr=1"
             }
-        });
+        ];
+
+        const cart = [];
+        const productList = document.getElementById("productList");
+        const cartItems = document.getElementById("cartItems");
+        const totalSpan = document.getElementById("total");
+
+        function renderProducts() {
+            products.forEach((item, index) => {
+                const productEl = document.createElement("div");
+                productEl.classList.add("product");
+                productEl.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" />
+          <h3>${item.name}</h3>
+          <p>R$ ${item.price.toFixed(2)}</p>
+          <button onclick="addToCart(${index})">Adicionar ao carrinho</button>
+        `;
+                productList.appendChild(productEl);
+            });
+        }
+
+        function addToCart(index) {
+            cart.push(products[index]);
+            updateCart();
+        }
+
+        function updateCart() {
+            cartItems.innerHTML = "";
+            let total = 0;
+            cart.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = `${item.name} - R$ ${item.price.toFixed(2)}`;
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+            totalSpan.textContent = total.toFixed(2);
+        }
+
+        renderProducts();
     </script>
 
 </body>
